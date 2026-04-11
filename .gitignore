@@ -1,0 +1,43 @@
+*/node_modules/
+*/dist/
+*/build/
+/thesis_project
+
+# Virtual Environment
+*/venv/
+*/env/
+*/ENV/
+*/.venv/
+# Python
+*/__pycache__/
+*/*.py[cod]
+*/*$py.class
+*/*.so
+*/.Python
+*/*.egg-info/
+*/dist/
+*/build/
+*/*.egg
+
+# Environment variables
+*/.env
+*/.env.local
+*/# IDE
+*/.vscode/
+*/.idea/
+*/*.swp
+*/*.swo
+# Testing
+*/.pytest_cache/
+*/.coverage
+*/htmlcov/
+*/.tox/
+# OS
+*/.DS_Store
+*/Thumbs.db
+# Project specific
+*/cache/
+*/sessions/
+*/tool_outputs/
+*/qa_reports/
+
