@@ -48,9 +48,12 @@ copy .env.example .env
 Edit `.env` and add your API keys:
 ```
 FIRECRAWL_API_KEY=your_firecrawl_key
+# LLM_PROVIDER=google   # google | groq | openai — must match which key you use
 GOOGLE_API_KEY=your_google_key
-GROQ_API_KEY=your_groq_key  # Optional
+GROQ_API_KEY=your_groq_key
+OPENAI_API_KEY=your_openai_key
 ```
+Set `LLM_PROVIDER` to `openai` when using OpenAI (and configure `OPENAI_MODEL` if not using the default `gpt-4o-mini`).
 
 ## 🎯 Usage
 
@@ -121,8 +124,7 @@ agentic_crawler/
 │       │   └── settings.py     # Configuration management
 │       ├── models/
 │       │   ├── __init__.py
-│       │   ├── execution.py    # Execution tracking models
-│       │   └── reports.py      # Website analysis report models
+│       │   └── execution.py    # Execution tracking models
 │       ├── services/
 │       │   ├── __init__.py
 │       │   ├── cache_service.py     # Caching logic

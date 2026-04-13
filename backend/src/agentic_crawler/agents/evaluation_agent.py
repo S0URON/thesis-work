@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Optional
 from langchain.agents import create_agent
 from langchain_groq import ChatGroq
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 
 from ..config import get_config
 from .prompts import get_system_prompt
@@ -20,12 +21,12 @@ class EvaluationAgent:
 
         Args:
             tools: List of MCP tools to use
-            model_type: "google" or "groq"
+            model_type: "google", "groq", or "openai"
             custom_prompt: Optional custom system prompt
         """
         self.config = get_config()
         self.tools = tools
-        self.model_type = model_type
+        self.model_type = (model_type or "google").strip().lower()
         self.system_prompt = custom_prompt or get_system_prompt()
 
         # Initialize model
@@ -42,12 +43,22 @@ class EvaluationAgent:
                 temperature=self.config.MODEL_TEMPERATURE,
                 streaming=self.config.ENABLE_STREAMING,
             )
-        else:  # google
-            return ChatGoogleGenerativeAI(
-                model=self.config.GOOGLE_MODEL,
-                temperature=self.config.MODEL_TEMPERATURE,
-                streaming=self.config.ENABLE_STREAMING,
-            )
+        if self.model_type == "openai":
+            kwargs = {
+                "model": self.config.OPENAI_MODEL,
+                "temperature": self.config.MODEL_TEMPERATURE,
+                "streaming": self.config.ENABLE_STREAMING,
+                "api_key": self.config.OPENAI_API_KEY,
+            }
+            if self.config.OPENAI_BASE_URL:
+                kwargs["base_url"] = self.config.OPENAI_BASE_URL
+            return ChatOpenAI(**kwargs)
+        # google (default)
+        return ChatGoogleGenerativeAI(
+            model=self.config.GOOGLE_MODEL,
+            temperature=self.config.MODEL_TEMPERATURE,
+            streaming=self.config.ENABLE_STREAMING,
+        )
 
     async def ainvoke(self, messages: List[Dict[str, str]]) -> Dict[str, Any]:
         """

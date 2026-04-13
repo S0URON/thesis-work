@@ -129,6 +129,50 @@ def get_recent_reports(limit: int = 10) -> list:
     return sorted(reports, reverse=True)[:limit]
 
 
+def resolve_safe_report_path(filename: str) -> Path:
+    """
+    Resolve a report file path under REPORTS_DIR only.
+
+    Args:
+        filename: Basename only (e.g. Website_Analysis_20250101_120000_example.com.md)
+
+    Raises:
+        ValueError: If the name is unsafe or not a supported extension.
+        FileNotFoundError: If the file does not exist.
+    """
+    config = get_config()
+    base = config.REPORTS_DIR.resolve()
+    raw = filename.strip()
+    if not raw or "/" in raw or "\\" in raw or ".." in raw:
+        raise ValueError("Invalid filename")
+    name = Path(raw).name
+    if name != raw:
+        raise ValueError("Invalid filename")
+    if not name.endswith((".md", ".json")):
+        raise ValueError("Report must be .md or .json")
+    path = (base / name).resolve()
+    try:
+        path.relative_to(base)
+    except ValueError as e:
+        raise ValueError("Invalid path") from e
+    if not path.is_file():
+        raise FileNotFoundError(name)
+    return path
+
+
+def read_report_file(filename: str) -> tuple[str, str]:
+    """
+    Read a report file from REPORTS_DIR.
+
+    Returns:
+        Tuple of (file contents, format) where format is \"markdown\" or \"json\".
+    """
+    path = resolve_safe_report_path(filename)
+    text = path.read_text(encoding="utf-8")
+    kind = "json" if path.suffix.lower() == ".json" else "markdown"
+    return text, kind
+
+
 def get_recent_outputs(limit: int = 10) -> list:
     """
     Get most recent tool outputs.

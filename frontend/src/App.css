@@ -1,8 +1,16 @@
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  flex: 1;
+  min-height: 0;
   text-align: left;
+}
+
+.route-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .app-header {
@@ -12,14 +20,44 @@
 
 .app-header h1 {
   font-size: 1.35rem;
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.5rem;
   letter-spacing: -0.02em;
+}
+
+.app-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.nav-link {
+  font-size: 0.95rem;
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--text-h);
+}
+
+.nav-link.is-active {
+  color: var(--text-h);
+  font-weight: 600;
+  border-bottom-color: var(--accent);
 }
 
 .app-sub {
   margin: 0;
   font-size: 0.9rem;
   color: var(--text);
+}
+
+.page-sub {
+  margin: 0.75rem 1.25rem 0;
+  padding-bottom: 0.5rem;
 }
 
 .base-url {
@@ -37,6 +75,138 @@
   background: var(--accent-bg);
   border: 1px solid var(--accent-border);
   color: var(--text-h);
+}
+
+.side-link {
+  margin: 0.5rem 0 0;
+  font-size: 0.88rem;
+}
+
+.side-link a {
+  color: var(--accent);
+}
+
+.reports-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 1.25rem 0.75rem;
+}
+
+.reports-back {
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.reports-back:hover {
+  text-decoration: underline;
+}
+
+.reports-archive {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 0;
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .reports-archive {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reports-list-panel {
+  border-right: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  max-height: min(70vh, calc(100svh - 12rem));
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .reports-list-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: 40vh;
+  }
+}
+
+.reports-list-title {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.reports-file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reports-file-list li {
+  margin-bottom: 0.25rem;
+}
+
+.reports-file-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.reports-file-btn:hover {
+  background: var(--code-bg);
+  color: var(--text-h);
+}
+
+.reports-file-btn.is-active {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+.reports-viewer {
+  padding: 1rem 1.25rem 2rem;
+  min-height: min(70vh, calc(100svh - 12rem));
+  overflow: auto;
+}
+
+.reports-viewer-title {
+  font-size: 1rem;
+  margin: 0 0 1rem;
+  word-break: break-all;
+}
+
+.reports-placeholder {
+  margin: 2rem 0;
+}
+
+.reports-md {
+  max-width: none;
+}
+
+.reports-json-pre {
+  margin: 0;
+  padding: 1rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  overflow: auto;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  max-height: min(65vh, calc(100svh - 14rem));
 }
 
 .app-body {

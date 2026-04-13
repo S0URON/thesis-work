@@ -36,14 +36,14 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │                         Data Models                              │
 │                   src/agentic_crawler/models/                    │
-│  ┌──────────────────┐         ┌──────────────────────┐          │
-│  │  Execution       │         │  Reports             │          │
-│  │  execution.py    │         │  reports.py          │          │
-│  │                  │         │                      │          │
-│  │  • ToolCall      │         │  • QAReport          │          │
-│  │  • ExecutionStats│         │  • TestScenario      │          │
-│  │  • CacheStats    │         │  • TestStep          │          │
-│  └──────────────────┘         └──────────────────────┘          │
+│  ┌──────────────────┐                                            │
+│  │  Execution       │                                            │
+│  │  execution.py    │                                            │
+│  │                  │                                            │
+│  │  • ToolCall      │                                            │
+│  │  • ExecutionStats│                                            │
+│  │  • CacheStats    │                                            │
+│  └──────────────────┘                                            │
 └─────────────────────────────────────────────────────────────────┘
           │
           ▼

@@ -292,8 +292,7 @@ agentic_crawler/
 │       │   └── settings.py        # Configuration management
 │       ├── models/
 │       │   ├── __init__.py
-│       │   ├── execution.py        # Execution tracking models
-│       │   └── reports.py         # QA report data models
+│       │   └── execution.py        # Execution tracking models
 │       ├── services/
 │       │   ├── __init__.py
 │       │   ├── cache_service.py      # LRU cache implementation

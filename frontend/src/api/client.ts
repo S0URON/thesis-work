@@ -2,6 +2,7 @@ import type {
   ChatRequest,
   ChatResponse,
   HealthResponse,
+  ReportFileContent,
 } from './types'
 
 async function parseJsonSafe(res: Response): Promise<unknown> {
@@ -85,8 +86,12 @@ export function normalizePathList(data: unknown): string[] {
   return []
 }
 
-export async function getReports(baseUrl: string): Promise<string[]> {
-  const res = await fetch(`${baseUrl}/api/reports`)
+export async function getReports(
+  baseUrl: string,
+  limit = 10,
+): Promise<string[]> {
+  const q = new URLSearchParams({ limit: String(limit) })
+  const res = await fetch(`${baseUrl}/api/reports?${q}`)
   const data = await parseJsonSafe(res)
   if (!res.ok) {
     throw new Error(
@@ -94,6 +99,34 @@ export async function getReports(baseUrl: string): Promise<string[]> {
     )
   }
   return normalizePathList(data)
+}
+
+export async function getReportContent(
+  baseUrl: string,
+  name: string,
+): Promise<ReportFileContent> {
+  const q = new URLSearchParams({ name })
+  const res = await fetch(`${baseUrl}/api/reports/content?${q}`)
+  const data = await parseJsonSafe(res)
+  if (!res.ok) {
+    throw new Error(
+      getErrorDetail(data) ?? `Report content failed: ${res.status} ${res.statusText}`,
+    )
+  }
+  if (
+    data &&
+    typeof data === 'object' &&
+    'content' in data &&
+    typeof (data as { content: unknown }).content === 'string'
+  ) {
+    const o = data as Record<string, unknown>
+    return {
+      name: typeof o.name === 'string' ? o.name : name,
+      content: o.content as string,
+      format: o.format === 'json' ? 'json' : 'markdown',
+    }
+  }
+  throw new Error('Invalid report content response')
 }
 
 export async function getOutputs(baseUrl: string): Promise<string[]> {

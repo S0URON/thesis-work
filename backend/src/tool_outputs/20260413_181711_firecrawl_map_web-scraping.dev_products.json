@@ -1,0 +1,8 @@
+{
+  "tool": "firecrawl_map",
+  "timestamp": "20260413_181711",
+  "arguments": {
+    "url": "https://web-scraping.dev/products"
+  },
+  "output": "{\n  \"links\": [\n    {\n      \"url\": \"https://web-scraping.dev/products\",\n      \"title\": \"web-scraping.dev product page 1\",\n      \"description\": \"Mock product pagination page 1 of None category for web scraper testing\"\n    }\n  ]\n}"
+}

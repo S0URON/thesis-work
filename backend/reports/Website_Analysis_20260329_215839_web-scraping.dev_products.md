@@ -45,20 +45,20 @@ graph TD
 #### User Flow 1: Browsing Products
 ```mermaid
 flowchart TD
-    Start([User lands on /products page]) --> ViewProductList[Views product listings];
-    ViewProductList --> FilterByCategory{User filters by category?};
-    FilterByCategory -->|Yes| ApplyCategoryFilter[Applies category filter];
-    FilterByCategory -->|No| SortProducts{User sorts products?};
+    Start(["User lands on /products page"]) --> ViewProductList["Views product listings"];
+    ViewProductList --> FilterByCategory{"User filters by category?"};
+    FilterByCategory -->|Yes| ApplyCategoryFilter["Applies category filter"];
+    FilterByCategory -->|No| SortProducts{"User sorts products?"};
     ApplyCategoryFilter --> SortProducts;
-    SortProducts -->|Yes| ApplySort[Applies sort order];
-    SortProducts -->|No| SelectProduct{User selects a product?};
+    SortProducts -->|Yes| ApplySort["Applies sort order"];
+    SortProducts -->|No| SelectProduct{"User selects a product?"};
     ApplySort --> SelectProduct;
-    SelectProduct --> ViewProductDetails[Navigates to product detail page];
-    ViewProductDetails --> ViewMoreInfo[Examines description, variants, tables];
-    ViewMoreInfo --> LoadMoreReviews[Clicks 'Load More' for reviews];
-    ViewMoreInfo --> ViewSimilarProduct{User views similar product?};
-    ViewSimilarProduct -->|Yes| NavigateToSimilar[Navigates to similar product page];
-    ViewMoreInfo --> NavigateBack[Navigates back to product list];
+    SelectProduct --> ViewProductDetails["Navigates to product detail page"];
+    ViewProductDetails --> ViewMoreInfo["Examines description, variants, tables"];
+    ViewMoreInfo --> LoadMoreReviews["Clicks 'Load More' for reviews"];
+    ViewMoreInfo --> ViewSimilarProduct{"User views similar product?"};
+    ViewSimilarProduct -->|Yes| NavigateToSimilar["Navigates to similar product page"];
+    ViewMoreInfo --> NavigateBack["Navigates back to product list"];
 ```
 
 ### 📊 Site Structure Details

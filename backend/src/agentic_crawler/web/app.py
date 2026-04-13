@@ -42,7 +42,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         async with ClientSession(read, write) as session:
             await session.initialize()
             all_tools = await load_mcp_tools(session)
-            agent = EvaluationAgent(tools=all_tools, model_type="google")
+            agent = EvaluationAgent(
+                tools=all_tools,
+                model_type=(config.LLM_PROVIDER or "google").strip().lower(),
+            )
             cache = CacheService(
                 max_size_mb=config.MAX_CACHE_SIZE, ttl_hours=config.CACHE_TTL_HOURS
             )

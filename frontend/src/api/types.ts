@@ -10,6 +10,8 @@ export type ToolEvent = {
 export type ChatRequest = {
   message: string
   session_id?: string
+  /** Optional; server uses current UTC if omitted. Shown as Executive Summary Analysis Date. */
+  analysis_date?: string
 }
 
 export type ChatResponse = {
@@ -23,4 +25,10 @@ export type ChatResponse = {
 export type HealthResponse = {
   status: string
   ready: boolean
+}
+
+export type ReportFileContent = {
+  name: string
+  content: string
+  format: 'markdown' | 'json'
 }

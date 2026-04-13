@@ -6,6 +6,7 @@ ipykernel>=7.1.0
 langchain>=1.0.2
 langchain-google-genai>=3.0.0
 langchain-groq>=1.0.0
+langchain-openai>=0.3.0
 langchain-mcp-adapters>=0.1.11
 mcp>=1.19.0
 rich>=14.2.0

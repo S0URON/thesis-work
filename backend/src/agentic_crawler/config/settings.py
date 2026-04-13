@@ -35,9 +35,13 @@ class Config:
     COST_PER_1K_INPUT_TOKENS: float = 0.00025
     COST_PER_1K_OUTPUT_TOKENS: float = 0.001
 
-    # Model settings
+    # Model settings — set LLM_PROVIDER to google | groq | openai (see .env)
+    LLM_PROVIDER: str = "google"
     GROQ_MODEL: str = "llama-3.3-70b-versatile"
     GOOGLE_MODEL: str = "gemini-2.5-flash-lite"
+    OPENAI_MODEL: str = "gpt-4o-mini"
+    # Optional: custom API base (OpenAI-compatible proxies, Azure OpenAI resource URL, etc.)
+    OPENAI_BASE_URL: Optional[str] = None
     MODEL_TEMPERATURE: float = 0.3
 
     # MCP Server settings
@@ -48,6 +52,7 @@ class Config:
     FIRECRAWL_API_KEY: Optional[str] = None
     GROQ_API_KEY: Optional[str] = None
     GOOGLE_API_KEY: Optional[str] = None
+    OPENAI_API_KEY: Optional[str] = None
 
     def __post_init__(self):
         """Initialize directories and load environment variables."""
@@ -72,6 +77,7 @@ class Config:
         self.FIRECRAWL_API_KEY = os.getenv("FIRECRAWL_API_KEY")
         self.GROQ_API_KEY = os.getenv("GROQ_API_KEY")
         self.GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+        self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
         # Override settings from environment if present
         if os.getenv("DEBUG_MODE"):
@@ -85,6 +91,13 @@ class Config:
 
         if os.getenv("MODEL_TEMPERATURE"):
             self.MODEL_TEMPERATURE = float(os.getenv("MODEL_TEMPERATURE"))
+
+        if os.getenv("LLM_PROVIDER"):
+            self.LLM_PROVIDER = os.getenv("LLM_PROVIDER", "google").strip().lower()
+        if os.getenv("OPENAI_MODEL"):
+            self.OPENAI_MODEL = os.getenv("OPENAI_MODEL", self.OPENAI_MODEL).strip()
+        if os.getenv("OPENAI_BASE_URL"):
+            self.OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "").strip() or None
 
     def _configure_logging(self):
         """Configure logging based on debug mode."""
@@ -112,8 +125,18 @@ class Config:
         if not self.FIRECRAWL_API_KEY:
             errors.append("FIRECRAWL_API_KEY is not set")
 
-        if not self.GROQ_API_KEY and not self.GOOGLE_API_KEY:
-            errors.append("At least one of GROQ_API_KEY or GOOGLE_API_KEY must be set")
+        valid_providers = ("google", "groq", "openai")
+        provider = (self.LLM_PROVIDER or "google").strip().lower()
+        if provider not in valid_providers:
+            errors.append(
+                f"LLM_PROVIDER must be one of: {', '.join(valid_providers)} (got {provider!r})"
+            )
+        elif provider == "google" and not self.GOOGLE_API_KEY:
+            errors.append("GOOGLE_API_KEY is required when LLM_PROVIDER=google")
+        elif provider == "groq" and not self.GROQ_API_KEY:
+            errors.append("GROQ_API_KEY is required when LLM_PROVIDER=groq")
+        elif provider == "openai" and not self.OPENAI_API_KEY:
+            errors.append("OPENAI_API_KEY is required when LLM_PROVIDER=openai")
 
         if errors:
             for error in errors:

@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-from ..agents import EvaluationAgent
+from ..agents import EvaluationAgent, get_system_prompt
 from ..config import Config, get_config
 from .cache_service import CacheService
 from .tracker_service import ExecutionTracker
@@ -88,7 +88,9 @@ class ChatSessionService:
         self.store = store or SessionStore()
         self._locks: Dict[str, asyncio.Lock] = defaultdict(lambda: asyncio.Lock())
 
-    async def process_turn(self, session_id: str, user_text: str) -> ProcessTurnOutcome:
+    async def process_turn(
+        self, session_id: str, user_text: str, analysis_date: Optional[str] = None
+    ) -> ProcessTurnOutcome:
         """
         Append user message, invoke agent, update history on success.
 
@@ -97,6 +99,8 @@ class ChatSessionService:
         Args:
             session_id: Conversation session key
             user_text: User message content
+            analysis_date: Optional string for Executive Summary **Analysis Date** in reports;
+                server UTC now is used when omitted or blank.
 
         Returns:
             ProcessTurnOutcome with TurnResult; agent_messages set on success for CLI tracing
@@ -107,6 +111,7 @@ class ChatSessionService:
             messages.append({"role": "user", "content": user_text})
 
             try:
+                self.agent.update_system_prompt(get_system_prompt(analysis_date=analysis_date))
                 agent_response = await self.agent.ainvoke(messages)
                 response_messages: List[Any] = agent_response["messages"]
                 tool_events: List[ToolEvent] = []

@@ -73,7 +73,6 @@ flowchart TB
 ┌─────────────────────────────────────────────────────────────────────────┐
 │  Data models              src/agentic_crawler/models/                   │
 │  execution.py (ToolCall, ExecutionStats, CacheStats)                    │
-│  reports.py (report structures)                                         │
 │  Pydantic: TurnResult, ToolEvent (in chat_service)                      │
 └─────────────────────────────────────────────────────────────────────────┘
                │
@@ -232,7 +231,7 @@ Cache Service
 
 ### Data Models (`models/` + chat DTOs)
 
-**Responsibilities:** Pydantic models in `models/execution.py`, `models/reports.py`; chat API DTOs `TurnResult`, `ToolEvent` live with `chat_service`.
+**Responsibilities:** Pydantic models in `models/execution.py`; chat API DTOs `TurnResult`, `ToolEvent` live with `chat_service`.
 
 ### Utilities (`utils/`)
 

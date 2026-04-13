@@ -62,7 +62,7 @@ class AgenticCrawlerCLI:
         # Initialize agent
         self.agent = EvaluationAgent(
             tools=all_tools,
-            model_type="google",  # Can be configurable
+            model_type=(self.config.LLM_PROVIDER or "google").strip().lower(),
         )
 
         self.chat_service = ChatSessionService(
