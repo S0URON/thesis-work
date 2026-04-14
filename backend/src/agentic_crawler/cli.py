@@ -261,11 +261,16 @@ class AgenticCrawlerCLI:
                             console.print(f"\n[dim]{traceback.format_exc()}[/dim]")
 
 
-async def main():
-    """Main entry point."""
+async def _run_async():
+    """Async CLI entry (used by sync `main` and tests)."""
     cli = AgenticCrawlerCLI()
     await cli.run()
 
 
+def main() -> None:
+    """Console script entry point (must be synchronous for setuptools)."""
+    asyncio.run(_run_async())
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

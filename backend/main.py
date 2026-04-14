@@ -1,6 +1,5 @@
 """Main entry point for Agentic Crawler application."""
 
-import asyncio
 import sys
 from pathlib import Path
 
@@ -13,7 +12,7 @@ from agentic_crawler.cli import main as cli_main
 def main():
     """Run the Agentic Crawler CLI."""
     try:
-        asyncio.run(cli_main())
+        cli_main()
     except KeyboardInterrupt:
         print("\n👋 Goodbye!")
     except Exception as e:
